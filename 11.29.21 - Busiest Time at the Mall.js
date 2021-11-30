@@ -20,25 +20,29 @@ function findBusiestPeriod(data) {
       // then save currentIndex[0] to topTrafficTime 
     // return topTrafficTime
     let timeInterval = [1487799425, 1487901211];
-    let currentTime = 1487799420;
     let currentTrafficPop = 0; 
     let topTrafficPop = 0; 
+    let topTrafficTimeStamp = 0
     
   
-  let time = timeInterval.map(currentTimeInterval => {
-        currentTime = currentTimeInterval; 
+    function range(start, end) {
+    return Array(end - start + 1).fill().map((_, idx) => start + idx)
+  }
+  let timeRange = range(1487799425, 1487901211); // [9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
+  console.log(timeRange);
+  
+  const top = timeRange.map(currentTime => {
+  
         let busiestTime = data.reduce((topTrafficTime, currentIndex) => {
-          console.log(currentTime)
-          console.log("start of", currentIndex[0], "at", currentTrafficPop)
-          if (currentIndex[0] >= currentTime && currentIndex[2] === 1) {
-            console.log(currentTrafficPop)
+          //console.log("start of", currentIndex[0], "at", currentTrafficPop)
+          if (currentIndex[0] === currentTime && currentIndex[2] === 1) {
             currentTrafficPop += currentIndex[1];
             if (currentTrafficPop > topTrafficPop) {
               topTrafficPop = currentTrafficPop
             }
           } 
           
-          if (currentIndex[0] >= currentTime && currentIndex[2] === 0) {
+          if (currentIndex[0] === currentTime && currentIndex[2] === 0) {
             //console.log(currentTrafficPop)
             currentTrafficPop -= currentIndex[1];
             if (currentTrafficPop > topTrafficPop) {
@@ -46,22 +50,29 @@ function findBusiestPeriod(data) {
             }
           };
           //console.log(currentTrafficPop)
-      
+  
           if (currentTrafficPop > topTrafficPop) {
-            //console.log(currentTrafficPop, "during its top")
-            topTrafficTime = currentIndex[0];
-          };
+            topTrafficTime = currentIndex[0]
+          }
           
         
               currentTime++
   
+            //console.log(topTrafficTime)
               return topTrafficTime;
         }, 0)
+        if (busiestTime > topTrafficTimeStamp) {
+          topTrafficTimeStamp = busiestTime
+        }
   
-      console.log(`the busiest tiem is ${busiestTime} at ${topTrafficPop}`)
-        return busiestTime;
+    return topTrafficTimeStamp
   
   })
+  
+  
+        console.log(topTrafficPop)
+        return topTrafficTimeStamp
+  
   
   
   }
